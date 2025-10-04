@@ -38,6 +38,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showHowToOrder, setShowHowToOrder] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
 
@@ -183,17 +184,19 @@ const Index = () => {
                       <Icon name="ShoppingBag" size={20} />
                       Каталог
                     </a>
-                    <a
-                      href="#"
-                      className="text-lg font-medium hover:text-primary transition-colors flex items-center gap-3"
-                      onClick={(e) => {
-                        e.preventDefault();
+                    <button
+                      onClick={() => {
+                        setShowCategories(true);
                         setMenuOpen(false);
+                        setTimeout(() => {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }, 100);
                       }}
+                      className="text-lg font-medium hover:text-primary transition-colors text-left flex items-center gap-3"
                     >
                       <Icon name="Package" size={20} />
                       Категории
-                    </a>
+                    </button>
                     <button
                       onClick={() => {
                         setShowHowToOrder(true);
@@ -382,12 +385,12 @@ const Index = () => {
             >
               Каталог
             </a>
-            <a
-              href="#"
+            <button
+              onClick={() => setShowCategories(true)}
               className="font-medium hover:text-primary transition-colors"
             >
               Категории
-            </a>
+            </button>
           </nav>
         </div>
       </header>
@@ -634,6 +637,130 @@ const Index = () => {
                 variant="outline"
                 className="text-lg px-8 hover-scale"
                 onClick={() => setShowHowToOrder(false)}
+              >
+                Закрыть
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {showCategories && (
+        <section className="fixed inset-0 z-50 bg-white overflow-y-auto animate-fade-in">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h2 className="text-4xl font-bold mb-4 font-montserrat">
+                  Категории товаров
+                </h2>
+                <p className="text-xl text-gray-600">
+                  Выберите категорию и найдите нужный товар
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowCategories(false)}
+                className="hover-scale sticky top-4"
+              >
+                <Icon name="X" size={32} />
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  name: 'Одежда и обувь',
+                  icon: 'Shirt',
+                  subcategories: ['Мужская одежда', 'Женская одежда', 'Обувь', 'Аксессуары'],
+                  gradient: 'from-blue-500 to-blue-600',
+                },
+                {
+                  name: 'Электроника',
+                  icon: 'Smartphone',
+                  subcategories: ['Смартфоны', 'Наушники', 'Умные часы', 'Гаджеты'],
+                  gradient: 'from-purple-500 to-purple-600',
+                },
+                {
+                  name: 'Для дома',
+                  icon: 'Home',
+                  subcategories: ['Техника', 'Текстиль', 'Посуда', 'Освещение'],
+                  gradient: 'from-green-500 to-green-600',
+                },
+                {
+                  name: 'Красота и здоровье',
+                  icon: 'Sparkles',
+                  subcategories: ['Косметика', 'Уход за кожей', 'Парфюмерия', 'Здоровье'],
+                  gradient: 'from-pink-500 to-pink-600',
+                },
+                {
+                  name: 'Хобби и развлечения',
+                  icon: 'Gamepad2',
+                  subcategories: ['Игры', 'Спорттовары', 'Музыка', 'Настольные игры'],
+                  gradient: 'from-orange-500 to-orange-600',
+                },
+                {
+                  name: 'Спорт и отдых',
+                  icon: 'Dumbbell',
+                  subcategories: ['Фитнес', 'Туризм', 'Велоспорт', 'Плавание'],
+                  gradient: 'from-red-500 to-red-600',
+                },
+                {
+                  name: 'Детские товары',
+                  icon: 'Baby',
+                  subcategories: ['Игрушки', 'Одежда', 'Питание', 'Уход'],
+                  gradient: 'from-yellow-500 to-yellow-600',
+                },
+                {
+                  name: 'Книги и канцелярия',
+                  icon: 'BookOpen',
+                  subcategories: ['Книги', 'Канцтовары', 'Творчество', 'Обучение'],
+                  gradient: 'from-indigo-500 to-indigo-600',
+                },
+              ].map((category, index) => (
+                <Card
+                  key={index}
+                  className="group relative overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer hover-scale"
+                  onClick={() => {
+                    setShowCategories(false);
+                    const catalogSection = document.getElementById('catalog');
+                    catalogSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  <CardContent className="p-6">
+                    <div className={`w-20 h-20 bg-gradient-to-br ${category.gradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                      <Icon name={category.icon} size={40} className="text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3 font-montserrat group-hover:text-primary transition-colors">
+                      {category.name}
+                    </h3>
+                    <ul className="space-y-2 text-gray-600">
+                      {category.subcategories.map((sub, subIndex) => (
+                        <li key={subIndex} className="flex items-center gap-2 text-sm">
+                          <Icon name="ChevronRight" size={14} className="text-primary" />
+                          {sub}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button
+                        size="sm"
+                        className="w-full bg-gradient-to-r from-blue-600 to-orange-500 text-white"
+                      >
+                        Открыть
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="flex justify-center mt-12">
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg px-8 hover-scale"
+                onClick={() => setShowCategories(false)}
               >
                 Закрыть
               </Button>
