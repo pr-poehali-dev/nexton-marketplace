@@ -32,6 +32,8 @@ interface CartItem extends Product {
 const Index = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [favorites, setFavorites] = useState<number[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
 
@@ -185,7 +187,12 @@ const Index = () => {
               </h1>
 
               <div className="flex items-center gap-2">
-                <Button variant="ghost" size="icon" className="hover-scale">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="hover-scale"
+                  onClick={() => setSearchOpen(!searchOpen)}
+                >
                   <Icon name="Search" size={20} />
                 </Button>
                 <Button
@@ -281,6 +288,35 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {searchOpen && (
+          <div className="border-t bg-gray-50 animate-fade-in">
+            <div className="container mx-auto px-4 py-4">
+              <div className="relative max-w-2xl mx-auto">
+                <Icon name="Search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Поиск товаров..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  autoFocus
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                  onClick={() => {
+                    setSearchOpen(false);
+                    setSearchQuery('');
+                  }}
+                >
+                  <Icon name="X" size={20} />
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="container mx-auto px-4 py-3">
           <nav className="flex items-center gap-6">
