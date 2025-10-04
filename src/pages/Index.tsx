@@ -488,10 +488,10 @@ const Index = () => {
       </section>
 
       <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto p-0">
+        <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto p-0">
           {selectedProduct && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
-              <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-6">
+              <div className="lg:col-span-3">
                 <DialogHeader>
                   <Button
                     variant="ghost"
