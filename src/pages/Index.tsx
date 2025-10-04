@@ -158,31 +158,71 @@ const Index = () => {
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80">
                   <nav className="flex flex-col gap-4 mt-8">
+                    <a
+                      href="#"
+                      className="text-lg font-medium hover:text-primary transition-colors flex items-center gap-3"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setMenuOpen(false);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                    >
+                      <Icon name="Home" size={20} />
+                      Главная
+                    </a>
+                    <a
+                      href="#catalog"
+                      className="text-lg font-medium hover:text-primary transition-colors flex items-center gap-3"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setMenuOpen(false);
+                        const catalogSection = document.getElementById('catalog');
+                        catalogSection?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      <Icon name="ShoppingBag" size={20} />
+                      Каталог
+                    </a>
+                    <a
+                      href="#"
+                      className="text-lg font-medium hover:text-primary transition-colors flex items-center gap-3"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setMenuOpen(false);
+                      }}
+                    >
+                      <Icon name="Package" size={20} />
+                      Категории
+                    </a>
                     <button
                       onClick={() => {
                         setShowHowToOrder(!showHowToOrder);
                         setMenuOpen(false);
                       }}
-                      className="text-lg font-medium hover:text-primary transition-colors story-link text-left"
+                      className="text-lg font-medium hover:text-primary transition-colors text-left flex items-center gap-3"
                     >
+                      <Icon name="Info" size={20} />
                       Как заказать
                     </button>
                     <a
                       href="#"
-                      className="text-lg font-medium hover:text-primary transition-colors story-link"
+                      className="text-lg font-medium hover:text-primary transition-colors flex items-center gap-3"
                     >
+                      <Icon name="MessageCircle" size={20} />
                       Поддержка
                     </a>
                     <a
                       href="#"
-                      className="text-lg font-medium hover:text-primary transition-colors story-link"
+                      className="text-lg font-medium hover:text-primary transition-colors flex items-center gap-3"
                     >
-                      Регистрация/Вход
+                      <Icon name="User" size={20} />
+                      Регистрация / Вход
                     </a>
                     <a
                       href="#"
-                      className="text-lg font-medium hover:text-primary transition-colors story-link"
+                      className="text-lg font-medium hover:text-primary transition-colors flex items-center gap-3"
                     >
+                      <Icon name="Phone" size={20} />
                       Контакты
                     </a>
                   </nav>
