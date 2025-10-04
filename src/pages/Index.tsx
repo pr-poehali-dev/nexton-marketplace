@@ -487,6 +487,100 @@ const Index = () => {
         </div>
       </section>
 
+      <section className="bg-gray-50 py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4 font-montserrat">
+              Как заказать на NEXTON
+            </h2>
+            <p className="text-xl text-gray-600">
+              Всё просто — выбери товар, сравни цены и закажи с доставкой из любого магазина мира
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                step: 1,
+                icon: 'Search',
+                title: 'Найди товар',
+                description: 'Используй поиск или выбери категорию, чтобы найти нужную вещь.',
+              },
+              {
+                step: 2,
+                icon: 'Scale',
+                title: 'Сравни цены',
+                description: 'На странице товара видно, где купить дешевле — у разных поставщиков и брендов.',
+              },
+              {
+                step: 3,
+                icon: 'ShoppingCart',
+                title: 'Добавь в корзину',
+                description: 'Нажми «Добавить в корзину» рядом с подходящим предложением.',
+              },
+              {
+                step: 4,
+                icon: 'FileText',
+                title: 'Оформи заказ',
+                description: 'Заполни простую форму: имя, телефон, e-mail и адрес доставки.',
+              },
+              {
+                step: 5,
+                icon: 'CreditCard',
+                title: 'Оплати удобным способом',
+                description: 'Поддерживаются разные способы оплаты — карта, перевод, при получении.',
+              },
+              {
+                step: 6,
+                icon: 'Package',
+                title: 'Получи заказ',
+                description: 'Мы сообщим о подтверждении и доставке. Просто жди — NEXTON всё сделает за тебя.',
+              },
+            ].map((item) => (
+              <Card
+                key={item.step}
+                className="relative overflow-hidden hover:shadow-lg transition-all animate-fade-in hover-scale"
+              >
+                <CardContent className="p-6">
+                  <div className="absolute top-4 right-4 text-6xl font-bold text-gray-100">
+                    {item.step}
+                  </div>
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-orange-500 rounded-full flex items-center justify-center mb-4">
+                      <Icon name={item.icon} size={32} className="text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 font-montserrat">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600">{item.description}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="flex justify-center gap-4">
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-white text-lg px-8 hover-scale"
+              onClick={() => {
+                const catalogSection = document.getElementById('catalog');
+                catalogSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Перейти в каталог
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 hover-scale"
+            >
+              Узнать больше
+            </Button>
+          </div>
+        </div>
+      </section>
+
       <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
         <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto p-0">
           {selectedProduct && (
