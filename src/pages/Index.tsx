@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -34,6 +36,7 @@ const Index = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
 
@@ -406,7 +409,12 @@ const Index = () => {
                 </Button>
               </div>
               <CardContent className="p-4">
-                <h3 className="font-bold text-lg mb-2">{product.name}</h3>
+                <h3 
+                  className="font-bold text-lg mb-2 cursor-pointer hover:text-primary transition-colors"
+                  onClick={() => setSelectedProduct(product)}
+                >
+                  {product.name}
+                </h3>
                 <p className="text-sm text-gray-600 mb-3">{product.description}</p>
                 <div className="flex items-center gap-1 mb-3">
                   <Icon name="Star" size={16} className="fill-yellow-400 text-yellow-400" />
@@ -478,6 +486,148 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto p-0">
+          {selectedProduct && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+              <div className="lg:col-span-2">
+                <DialogHeader>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-4 top-4 z-10"
+                    onClick={() => setSelectedProduct(null)}
+                  >
+                    <Icon name="X" size={24} />
+                  </Button>
+                </DialogHeader>
+
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  className="w-full h-96 object-cover rounded-lg mb-6"
+                />
+
+                <h1 className="text-3xl font-bold mb-4 font-montserrat">
+                  {selectedProduct.name}
+                </h1>
+
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="flex items-center gap-1">
+                    <Icon name="Star" size={20} className="fill-yellow-400 text-yellow-400" />
+                    <span className="text-lg font-medium">{selectedProduct.rating}</span>
+                  </div>
+                  <span className="text-gray-500">
+                    ({selectedProduct.reviews} отзывов)
+                  </span>
+                </div>
+
+                <Separator className="my-6" />
+
+                <div>
+                  <h2 className="text-xl font-bold mb-4">Описание</h2>
+                  <p className="text-gray-600 leading-relaxed mb-4">
+                    {selectedProduct.description}
+                  </p>
+                  <p className="text-gray-600 leading-relaxed">
+                    Этот товар доступен в {selectedProduct.prices.length} магазинах по разным ценам.
+                    Выберите наиболее подходящее предложение справа и совершите выгодную покупку!
+                  </p>
+                </div>
+
+                <Separator className="my-6" />
+
+                <div>
+                  <h2 className="text-xl font-bold mb-4">Отзывы покупателей</h2>
+                  <div className="space-y-4">
+                    {reviews.slice(0, 2).map((review) => (
+                      <Card key={review.id}>
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3 mb-3">
+                            <Avatar className="h-10 w-10">
+                              <AvatarImage src={review.avatar} />
+                              <AvatarFallback>{review.name[0]}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <h3 className="font-medium">{review.name}</h3>
+                              <div className="flex gap-1">
+                                {Array.from({ length: review.rating }).map((_, i) => (
+                                  <Icon
+                                    key={i}
+                                    name="Star"
+                                    size={14}
+                                    className="fill-yellow-400 text-yellow-400"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-gray-600">{review.text}</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-1">
+                <div className="sticky top-6">
+                  <Card>
+                    <CardContent className="p-6">
+                      <h2 className="text-xl font-bold mb-4">Сравнение цен</h2>
+                      <div className="space-y-4">
+                        {selectedProduct.prices
+                          .sort((a, b) => a.price - b.price)
+                          .map((priceInfo, index) => (
+                            <div
+                              key={index}
+                              className={`p-4 rounded-lg border-2 transition-all ${
+                                index === 0
+                                  ? 'border-primary bg-blue-50'
+                                  : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                            >
+                              <div className="flex items-start justify-between mb-3">
+                                <div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h3 className="font-bold">{priceInfo.shop}</h3>
+                                    {index === 0 && (
+                                      <Badge className="bg-green-500">
+                                        Лучшая цена
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-2xl font-bold text-primary">
+                                    {priceInfo.price} {priceInfo.currency}
+                                  </p>
+                                </div>
+                              </div>
+                              {index > 0 && (
+                                <p className="text-sm text-gray-500 mb-3">
+                                  +{priceInfo.price - selectedProduct.prices.sort((a, b) => a.price - b.price)[0].price} ₽ дороже
+                                </p>
+                              )}
+                              <Button
+                                className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                                onClick={() => {
+                                  addToCart(selectedProduct);
+                                  setSelectedProduct(null);
+                                }}
+                              >
+                                Купить здесь
+                              </Button>
+                            </div>
+                          ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
