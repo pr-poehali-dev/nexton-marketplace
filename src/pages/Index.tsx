@@ -196,8 +196,11 @@ const Index = () => {
                     </a>
                     <button
                       onClick={() => {
-                        setShowHowToOrder(!showHowToOrder);
+                        setShowHowToOrder(true);
                         setMenuOpen(false);
+                        setTimeout(() => {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }, 100);
                       }}
                       className="text-lg font-medium hover:text-primary transition-colors text-left flex items-center gap-3"
                     >
@@ -532,24 +535,24 @@ const Index = () => {
       </section>
 
       {showHowToOrder && (
-        <section className="bg-gray-50 py-16 animate-fade-in">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center mb-12">
-              <div className="text-center flex-1">
+        <section className="fixed inset-0 z-50 bg-white overflow-y-auto animate-fade-in">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex justify-between items-start mb-8">
+              <div>
                 <h2 className="text-4xl font-bold mb-4 font-montserrat">
                   Как заказать на NEXTON
                 </h2>
                 <p className="text-xl text-gray-600">
-                  Всё просто — выбери товар, сравни цены и закажи с доставкой из любого магазина мира
+                  Всё просто — покупай, сравнивай, экономь!
                 </p>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowHowToOrder(false)}
-                className="hover-scale"
+                className="hover-scale sticky top-4"
               >
-                <Icon name="X" size={24} />
+                <Icon name="X" size={32} />
               </Button>
             </div>
 
