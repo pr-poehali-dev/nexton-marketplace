@@ -490,8 +490,8 @@ const Index = () => {
       <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
         <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto p-0">
           {selectedProduct && (
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-6">
-              <div className="lg:col-span-3">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
+              <div>
                 <DialogHeader>
                   <Button
                     variant="ghost"
@@ -506,7 +506,7 @@ const Index = () => {
                 <img
                   src={selectedProduct.image}
                   alt={selectedProduct.name}
-                  className="w-full h-96 object-cover rounded-lg mb-6"
+                  className="w-full h-[500px] object-cover rounded-lg mb-6"
                 />
 
                 <h1 className="text-3xl font-bold mb-4 font-montserrat">
@@ -571,7 +571,7 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="lg:col-span-1">
+              <div>
                 <div className="sticky top-6">
                   <Card>
                     <CardContent className="p-6">
