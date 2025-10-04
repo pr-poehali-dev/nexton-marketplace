@@ -317,13 +317,17 @@ const Index = () => {
           <Button
             size="lg"
             className="bg-white text-primary hover:bg-gray-100 text-lg px-8 hover-scale"
+            onClick={() => {
+              const catalogSection = document.getElementById('catalog');
+              catalogSection?.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
             Начать покупки
           </Button>
         </div>
       </section>
 
-      <section className="container mx-auto px-4 py-12">
+      <section id="catalog" className="container mx-auto px-4 py-12">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold font-montserrat">Популярные товары</h2>
           <div className="flex gap-2">
